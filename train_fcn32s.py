@@ -32,9 +32,10 @@ def get_parameters(model, bias=False):
             else:
                 yield m.weight
         elif isinstance(m, nn.ConvTranspose2d):
-            # weight is frozen because it is bilinear upsampling
             if bias:
-                assert m.bias is None
+                yield m.bias
+            else:
+                yield m.weight
         elif isinstance(m, modules_skipped):
             continue
         else:
