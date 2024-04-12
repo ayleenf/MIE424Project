@@ -20,6 +20,8 @@ The Pascal VOC 2012 Dataset was used for this project, which can be downloaded f
 Click the "training/validation" data (2GB tar) to download.
 
 ## Usage
+Note that the directory paths in the code might change depending on your directory structure. Please change this accordingly before running anything.
+
 To train the model, run the `train_fcn32s.py` script from the command line. You can specify various arguments to customize the training process. For example, to specify which GPU to use and to set the maximum number of iterations, you can use the following command:
 
 ```bash
