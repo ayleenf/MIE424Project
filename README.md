@@ -1,1 +1,1 @@
-# MIE424Project
+# Weight Initialization for Semantic Segmentation
