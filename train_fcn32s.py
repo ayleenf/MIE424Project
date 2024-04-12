@@ -55,7 +55,7 @@ def main():
         '--max-iteration', type=int, default=100000, help='max iteration'
     )
     parser.add_argument(
-        '--lr', type=float, default=1.0e-10, help='learning rate',
+        '--lr', type=float, default=1.0e-5, help='learning rate',
     )
     parser.add_argument(
         '--weight-decay', type=float, default=0.0005, help='weight decay',
