@@ -29,6 +29,6 @@ python train_fcn32s.py -g 0 -max_iter 10000
 Please read through the train_fcn32s.py file to see all available arguments you can specify.
 
 ## Acknowledgments
-Our FCN32s architecture was referenced from the [Fully Convolutional Networks for Semantic Segmentation](https://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Long_Fully_Convolutional_Networks_2015_CVPR_paper.pdf) paper by Long et. al. We also used the [GradInit code by Chen Zhu](https://par.nsf.gov/servlets/purl/10397365) for GradInit weight initialization.
+Our FCN32s architecture was referenced from the [Fully Convolutional Networks for Semantic Segmentation](https://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Long_Fully_Convolutional_Networks_2015_CVPR_paper.pdf) paper by Long et. al. We also used the [GradInit code by Chen Zhu](https://github.com/zhuchen03/gradinit) for GradInit weight initialization.
 
-We would like to thank Prof. Elias Khalil for teaching such an amazing course, and for the MIE424 TAs as well for supporting us. 
+We would like to thank Prof. Elias Khalil for teaching such an amazing course, and the MIE424 TAs as well for supporting us!!
