@@ -24,8 +24,9 @@ def get_upsampling_weight(in_channels, out_channels, kernel_size):
 
 class FCN32s(nn.Module):
 
-    def __init__(self, n_class=21):
+    def __init__(self, n_class=21, loader=None):
         super(FCN32s, self).__init__()
+        self.loader = loader
         # conv1
         self.conv1_1 = nn.Conv2d(3, 64, 3, padding=100)
         self.relu1_1 = nn.ReLU(inplace=True)
@@ -97,6 +98,48 @@ class FCN32s(nn.Module):
                 initial_weight = get_upsampling_weight(
                     m.in_channels, m.out_channels, m.kernel_size[0])
                 m.weight.data.copy_(initial_weight)
+
+    def sample_training_set(self):
+        idx = random.randint(0, len(self.loader) - 1)  # Randomly select an index
+        for i, (data, target) in enumerate(self.loader):
+            if i == idx:
+                return data, target
+            
+    def GradInit(self, A, tau, T, gamma, alpha=0.01):
+        m = 1
+        for _ in range(1, T+1):
+            data, target = self.sample_training_set()  # Sample from train_loader
+            Lt = self.compute_loss(data, target, m)
+            
+            gt = torch.autograd.grad(Lt, self.parameters(), create_graph=True)  # Compute gradients
+
+            if torch.norm(gt, p=A) > gamma:
+                m += 1
+                for param in self.parameters():
+                    param.grad = torch.zeros_like(param)  # Initialize gradients to zero
+                self.zero_grad()  # Reset gradients to zero
+                gt_norm = torch.norm(gt, p=A)
+                gt_norm.backward()
+                with torch.no_grad():
+                    for param in self.parameters():
+                        param -= tau * param.grad
+            else:
+                data, target = self.sample_training_set()  # Sample from train_loader
+                Lt_tilde = self.compute_loss(data, target, m)
+                
+                m += 1
+                for param in self.parameters():
+                    param.grad = torch.zeros_like(param)  # Initialize gradients to zero
+                self.zero_grad()  # Reset gradients to zero
+                Lt_tilde.backward()
+                with torch.no_grad():
+                    for param in self.parameters():
+                        param -= tau * param.grad
+                
+            # Clamp parameters using alpha
+            with torch.no_grad():
+                for param in self.parameters():
+                    param.clamp_(-alpha, alpha)
 
     def forward(self, x):
         h = x
