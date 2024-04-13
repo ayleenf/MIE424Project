@@ -75,7 +75,7 @@ class VOCClassSegBase(data.Dataset):
         else:
             return img, lbl
 
-    def transform(self, img, lbl):
+    def transform(self, img, lbl): #ended up not applying transformation
         img = img[:, :, ::-1]  # RGB -> BGR
         img = img.astype(np.float64)
         img -= self.mean_bgr
@@ -84,7 +84,7 @@ class VOCClassSegBase(data.Dataset):
         lbl = torch.from_numpy(lbl).long()
         return img, lbl
 
-    def untransform(self, img, lbl):
+    def untransform(self, img, lbl): #ended up not applying transformation
         img = img.numpy()
         img = img.transpose(1, 2, 0)
         img += self.mean_bgr
